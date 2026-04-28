@@ -42,7 +42,7 @@ Le Capteur d’Altitude
 Nous n’avons pas de capteur GPS intégré. L'accès physique à ces composants est ouvert dès la mise sous tension, sans mécanisme d'authentification matériel.
 
 **Aperçu du matériel :**
-![Drone Physique](Captures/physical_drone.jpg)
+![Drone](Captures/physical_drone.jpg)
 
 
 

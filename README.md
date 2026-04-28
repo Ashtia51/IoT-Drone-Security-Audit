@@ -73,7 +73,7 @@ Ci-dessous, les captures d'écran réalisées lors de l'interception des flux en
 | ![first_analyse](Captures/first_analyse.png) | **Première Analyse** : Identification des premiers échanges TCP/UDP. |
 | ![second_analyse](Captures/second_analyse.png) | **Seconde Analyse** : Confirmation de la stabilité des flux vidéos. |
 | ![UDP_spam](Captures/UDP_spam.png) | **Déni de Service / Spam** : Observation du flux constant de paquets de pilotage. |
-| ![payload](Captures/payload.png) | **Analyse Payload** : Structure de la trame de 7 octets (Commandes de vol). |
+| ![payload](Captures/payload.jpg) | **Analyse Payload** : Structure de la trame de 7 octets (Commandes de vol). |
 
 
 

@@ -43,5 +43,37 @@ Nous n’avons pas de capteur GPS intégré. L'accès physique à ces composants
 **Aperçu du matériel :**
 ![Drone](Captures/physical_drone.png)
 
+<a name="iii-reseau"></a>
+## III. Couche Réseau (Network)
+
+| Élément | Rôle | Adresse IP |
+| :--- | :--- | :--- |
+| **Drone (AP)** | Passerelle par défaut (Gateway A) | `192.168.1.1` |
+| **Drone (AP)** | Passerelle par défaut (Gateway B) | `192.168.28.1` |
+| **Smartphone** | Interface de capture PCAPdroid (VPN) | `10.215.173.1` |
+
+La connexion au point d’accès du drone ne requiert aucune clé (Open Wi-Fi). L’absence de protocole WPA2/WPA3 permet une interception immédiate du trafic par n’importe quel attaquant à portée de signal.
+
+Depuis l’application PCAPdroid, j’ai pu capturer les paquets avant de les exporter en.pcap. En analysant les logs sur Wireshark, je me suis aperçu de plusieurs points critiques. En effet, les services sont exposés en clair. Comme il n’y a pas de protocole TLS, plusieurs points critiques sont visibles :
+
+Port 7777 (UDP) 
+Flux de pilotage. Les commandes sont envoyées via des trames de 7 octets. L'absence de chiffrement permettrait à un attaquant d'injecter ses propres commandes pour détourner le drone. 
+
+Ports 7070 et 7080 (TCP) 
+Flux vidéo et commandes multimédias. Le flux est interceptable en temps réel, portant atteinte à la vie privée de l'utilisateur. 
+
+### 📸 Preuves d'Audit et Analyses de Flux
+
+Ci-dessous, les captures d'écran réalisées lors de l'interception des flux entre le drone et le smartphone (Android 16).
+
+| Capture | Description Technique |
+| :--- | :--- |
+| ![info_wifi1](Captures/info_wifi1.png) | **Info WiFi 1** : Configuration initiale du point d'accès. |
+| ![info_wifi2](Captures/info_wifi2.png) | **Info WiFi 2** : Détails des paramètres IP et DNS du drone. |
+| ![first_analyse](Captures/first_analyse.png) | **Première Analyse** : Identification des premiers échanges TCP/UDP. |
+| ![second_analyse](Captures/second_analyse.png) | **Seconde Analyse** : Confirmation de la stabilité des flux vidéos. |
+| ![UDP_spam](Captures/UDP_spam.png) | **Déni de Service / Spam** : Observation du flux constant de paquets de pilotage. |
+| ![payload](Captures/payload.png) | **Analyse Payload** : Structure de la trame de 7 octets (Commandes de vol). |
+
 
 

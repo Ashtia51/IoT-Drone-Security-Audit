@@ -75,5 +75,37 @@ Ci-dessous, les captures d'écran réalisées lors de l'interception des flux en
 | ![UDP_spam](Captures/UDP_spam.png) | **Déni de Service / Spam** : Observation du flux constant de paquets de pilotage. |
 | ![payload](Captures/payload.jpg) | **Analyse Payload** : Structure de la trame de 7 octets (Commandes de vol). |
 
+<a name="iv-soutien"></a>
+## IV. Couche de Soutien (Service/Support)
+
+Le drone possédant son propre réseau wifi sans accès à internet donc même en étant connecté en 4G/5G en plus du wifi, je n’ai pas pu retracer certaines informations liés au cloud. De plus, les communications doivent sûrement êtres chiffrées.
+En l'absence de visibilité, le risque principal réside dans le transfert de données de géolocalisation (récupérées par l'application en Couche V) vers des serveurs situés hors de l'Union Européenne, sans garantie de protection conforme au RGPD.
+
+<a name="v-application"></a>
+## V. Couche Application
+
+L’application auditée est « PNJ View » dans la version 1.4.7 via mon téléphone sous Android 16. L’application sert de terminal de visualisation (FPV), de panneau de commande et de gestionnaire de médias. 
+
+Géolocalisation (ACCESS_FINE_LOCATION) : L'application exige l'accès au GPS du smartphone alors que le drone est dépourvu de module GPS. Cette donnée n'est pas nécessaire au vol mais est collectée par l'application.
+Accès aux fichiers (READ_EXTERNAL_STORAGE) : Une permission étendue qui permet à l'application d'accéder à l'ensemble des photos et documents de l'utilisateur, bien au-delà des seuls médias capturés par le drone.
+État du Wi-Fi (CHANGE_NETWORK_STATE) : Permet à l'application de manipuler les connexions sans intervention manuelle, exposant le téléphone aux réseaux non sécurisés du drone de manière automatique.
+
+Nous pouvons donc en conclure que la collecte de données de localisation sans justification technique échappe au principe de minimisation des données (RGPD). 
+Le drone étant accessible dès 14 ans, l'absence de chiffrement des flux (vu en Couche V) combinée à ces permissions intrusives expose une population vulnérable à des risques de détournement de données privées et de géolocalisation.
+
+![Vue d'ensemble](Captures/overview.jpg)
+![Interface Application](Captures/appli_pnj.jpg)
+
+<a name="vi-conclusion"></a>
+## VI. Conclusion et Axes d'Amélioration
+
+Concernant le wifi on pourrait implémenter par défaut un chiffrement WPA2/WPA3 avec un mot de passe unique par appareil (inscrit sous le châssis) pour éviter les connexions non autorisées. 
+Pour le firmware, mettre en place une signature au démarrage donc un secure boot pour éviter l’installation de logiciels malveillants.
+En ce qui concerne les flux, instaurer des chiffrements via des protocoles sécurisés tels que TLS (commandes) et SRTP (pour les vidéos).
+Les ports devraient êtres masqués et n'autoriser les connexions que depuis l'adresse IP du contrôleur légitime.
+Supprimer la demande d'accès à la localisation GPS si le drone ne dispose pas de fonction GPS.
+Adopter les standards d'Android 16  plutôt que de demander un accès complet au stockage externe.
+Ajouter une mention claire dans l'application sur la destination des données de télémétrie envoyées vers la Couche de Soutien (Cloud). 
+
 
 
